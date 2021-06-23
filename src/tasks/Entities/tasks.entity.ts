@@ -19,5 +19,6 @@ export class Task extends BaseEntity{
     @Column()
     sprint: string;
     @ManyToOne(type =>TaskType , taskType =>taskType.tasks) 
-    taskType:TaskType;
+    taskType:Date;
 }
+"2020/01/01 08:00:01"
