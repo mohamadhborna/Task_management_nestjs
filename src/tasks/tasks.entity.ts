@@ -1,8 +1,8 @@
-
-import { BaseEntity, Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { TaskStatus } from "./task-status.entity";
 import { TaskType } from "./task-type.entity";
 
+@Entity()
 export class Task extends BaseEntity{
     @PrimaryGeneratedColumn()
     id:number;
