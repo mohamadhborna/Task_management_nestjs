@@ -1,4 +1,4 @@
-import { IsDate, IsNotEmpty } from "class-validator";
+import { IsDate, IsNotEmpty, IsNumber, IS_DATE, IS_IN } from "class-validator";
 
 export class CreateTaskDto {
 
@@ -7,6 +7,9 @@ export class CreateTaskDto {
     @IsNotEmpty()
     description: string;
     @IsDate()
-    spentTime: string
-    
+    estimatedTime: Date
+    @IsNotEmpty()
+    sprint:string
+    @IsNumber()
+    taskType:number    
 }

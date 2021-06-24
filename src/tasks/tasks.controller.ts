@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { CreateTaskDto } from "./Dtos/createTask.dto";
 import { CreateTaskTypeDto } from "./Dtos/createTaskType.dto";
 import { TaskType } from "./Entities/task-type.entity";
 import { Task } from "./Entities/tasks.entity";
@@ -20,9 +21,22 @@ export class TaskController{
     getTaskTypeBydId(@Param('id') id:number){
         return this.taskService.getTaskTypeById(id)
     }
+
+
     @Get()
     getAllTasks():Promise<Task[]>{
         return this.taskService.getAllTasks();
     }
-
+    @Post()
+    createTask(@Body()createTaskDto:CreateTaskDto):Promise<Task>{
+        return this.taskService.createTask(createTaskDto)
+    }
+    @Get('/:id')
+    getTaskById(@Param('id') id: number){
+        return this.taskService.getTaskById(id)
+    }
+    @Delete('/:id')
+    deleteTaskById(@Param('id') id: number){
+        return this.taskService.deleteTask(id)
+    }
 }

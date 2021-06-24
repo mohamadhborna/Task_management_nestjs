@@ -12,13 +12,13 @@ export class Task extends BaseEntity{
     description: string;
     @Column()
     status: TaskStatus;
-    @Column({ type: 'timestamptz', nullable: true })
+    @Column({type:'timestamp'})
     spentTime: Date;
-    @Column({ type: 'timestamptz', nullable: true })
-    estimatedTime:Date;
+    @Column({type:'timestamp'})
+    estimatedTime: Date;
     @Column()
     sprint: string;
     @ManyToOne(type =>TaskType , taskType =>taskType.tasks) 
-    taskType:Date;
+    taskType:number;
 }
-"2020/01/01 08:00:01"
+// "2020/01/01 08:00:01"
