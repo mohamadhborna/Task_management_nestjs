@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/auth/user.entity";
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { TaskStatus } from "./task-status.entity";
 import { TaskType } from "./task-type.entity";
 
@@ -20,5 +21,10 @@ export class Task extends BaseEntity{
     sprint: string;
     @ManyToOne(type =>TaskType , taskType =>taskType.tasks) 
     taskType:number;
+    @ManyToOne(type => User , user => user.tasks ,{eager:false} )
+    @JoinColumn([
+        { name: 'userId', referencedColumnName: 'id' }
+    ])
+    user:User
 }
 // "2020/01/01 08:00:01"
