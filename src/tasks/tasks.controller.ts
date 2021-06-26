@@ -1,5 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
+import { Role } from "src/auth/role.enum";
+import { Roles } from "src/auth/roles.decorator";
 import { CreateTaskDto } from "./Dtos/createTask.dto";
 import { CreateTaskTypeDto } from "./Dtos/createTaskType.dto";
 import { UpdateTaskDto } from "./Dtos/updateTask.dto";
@@ -47,12 +49,12 @@ export class TaskController{
     }
     @Patch('/:id')
     @UseGuards(AuthGuard('jwt'))
+    @Roles(Role.ADMIN)
     updateTask(
         @Param('id') id:number,
         @Body()updateTaskDto:UpdateTaskDto,
-        @Req() req
     ):Promise<Task>{
-        return this.taskService.updateTask(id,updateTaskDto , req.user);
+        return this.taskService.updateTask(id,updateTaskDto);
     }
 
 }

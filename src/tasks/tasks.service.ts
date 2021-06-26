@@ -52,9 +52,12 @@ export class TaskService{
         const task = this.getTaskById(id ,user);
         await this.taskRepository.delete(id);
     }
-    async updateTask(id:number , updateTaskDto:UpdateTaskDto  ,user:User):Promise<Task>{
+    async updateTask(id:number , updateTaskDto:UpdateTaskDto):Promise<Task>{
         const {status , type} =updateTaskDto
-        const task =  await this.getTaskById(id , user);
+        const task = await this.taskRepository.findOne(id);
+        if(!task){
+            throw new NotFoundException('this task doesnt exist');
+        }
         task.status = status;
         task.taskType = type;
         await task.save();

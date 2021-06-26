@@ -12,8 +12,9 @@ export class SignUpDto{
     @MaxLength(20)
     @Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})") 
     password:string;
-    @IsIn([Role.ADMIN , Role.USER])
-    role:Role
+    // @IsIn([Role.ADMIN , Role.USER])
+    @IsArray()
+    role:Role[];
 
 
     
