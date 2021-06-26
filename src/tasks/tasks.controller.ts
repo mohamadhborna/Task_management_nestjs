@@ -36,17 +36,17 @@ export class TaskController{
         return this.taskService.createTask(createTaskDto ,req.user)
     }
     @Get('/:id')
-    @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('jwt'))
     getTaskById(@Param('id') id: number , @Req() req){
         return this.taskService.getTaskById(id , req.user)
     }
     @Delete('/:id')
-    @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('jwt'))
     deleteTaskById(@Param('id') id: number , @Req() req){
         return this.taskService.deleteTask(id  ,req.user)
     }
     @Patch('/:id')
-    @UseGuards(AuthGuard())
+    @UseGuards(AuthGuard('jwt'))
     updateTask(
         @Param('id') id:number,
         @Body()updateTaskDto:UpdateTaskDto,

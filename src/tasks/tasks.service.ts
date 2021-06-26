@@ -42,9 +42,9 @@ export class TaskService{
         return await this.taskRepository.createTask(createTaskDto , user)
     }
     async getTaskById(id:number , user:User):Promise<Task>{
-        const task = await this.taskRepository.findOne(id);
+        const task = await this.taskRepository.findOne({where:{id , userId:user.id}});
         if(!task){
-            throw new NotFoundException('this task doesnt exist');
+            throw new NotFoundException('this task doesnt exist or belongs to another user');
         }
         return task
     }
