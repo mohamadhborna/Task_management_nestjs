@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "src/auth/user.entity";
 import { CreateTaskDto } from "./Dtos/createTask.dto";
 import { CreateTaskTypeDto } from "./Dtos/createTaskType.dto";
 import { UpdateTaskDto } from "./Dtos/updateTask.dto";
@@ -34,26 +35,26 @@ export class TaskService{
     }
 
 
-    async getAllTasks():Promise<Task[]>{
-        return await this.taskRepository.getAllTasks()
+    async getAllTasks(user:User):Promise<Task[]>{
+        return await this.taskRepository.getAllTasks(user)
     }
-    async createTask(createTaskDto:CreateTaskDto):Promise<Task>{
-        return await this.taskRepository.createTask(createTaskDto)
+    async createTask(createTaskDto:CreateTaskDto , user:User):Promise<Task>{
+        return await this.taskRepository.createTask(createTaskDto , user)
     }
-    async getTaskById(id:number):Promise<Task>{
+    async getTaskById(id:number , user:User):Promise<Task>{
         const task = await this.taskRepository.findOne(id);
         if(!task){
             throw new NotFoundException('this task doesnt exist');
         }
         return task
     }
-    async deleteTask(id:number):Promise<void>{
-        const task = this.getTaskById(id);
+    async deleteTask(id:number , user:User):Promise<void>{
+        const task = this.getTaskById(id ,user);
         await this.taskRepository.delete(id);
     }
-    async updateTask(id:number , updateTaskDto:UpdateTaskDto):Promise<Task>{
+    async updateTask(id:number , updateTaskDto:UpdateTaskDto  ,user:User):Promise<Task>{
         const {status , type} =updateTaskDto
-        const task =  await this.getTaskById(id);
+        const task =  await this.getTaskById(id , user);
         task.status = status;
         task.taskType = type;
         await task.save();

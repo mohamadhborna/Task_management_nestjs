@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards, UsePipes, ValidationPipe } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
 import { CreateTaskDto } from "./Dtos/createTask.dto";
 import { CreateTaskTypeDto } from "./Dtos/createTaskType.dto";
 import { UpdateTaskDto } from "./Dtos/updateTask.dto";
@@ -25,27 +26,33 @@ export class TaskController{
 
 
     @Get()
-    getAllTasks():Promise<Task[]>{
-        return this.taskService.getAllTasks();
+    @UseGuards(AuthGuard())
+    getAllTasks(@Req() req):Promise<Task[]>{
+        return this.taskService.getAllTasks(req.user);
     }
     @Post()
-    createTask(@Body()createTaskDto:CreateTaskDto):Promise<Task>{
-        return this.taskService.createTask(createTaskDto)
+    @UseGuards(AuthGuard('jwt'))
+    createTask(@Body()createTaskDto:CreateTaskDto , @Req() req):Promise<Task>{
+        return this.taskService.createTask(createTaskDto ,req.user)
     }
     @Get('/:id')
-    getTaskById(@Param('id') id: number){
-        return this.taskService.getTaskById(id)
+    @UseGuards(AuthGuard())
+    getTaskById(@Param('id') id: number , @Req() req){
+        return this.taskService.getTaskById(id , req.user)
     }
     @Delete('/:id')
-    deleteTaskById(@Param('id') id: number){
-        return this.taskService.deleteTask(id)
+    @UseGuards(AuthGuard())
+    deleteTaskById(@Param('id') id: number , @Req() req){
+        return this.taskService.deleteTask(id  ,req.user)
     }
     @Patch('/:id')
+    @UseGuards(AuthGuard())
     updateTask(
         @Param('id') id:number,
-        @Body()updateTaskDto:UpdateTaskDto
+        @Body()updateTaskDto:UpdateTaskDto,
+        @Req() req
     ):Promise<Task>{
-        return this.taskService.updateTask(id,updateTaskDto);
+        return this.taskService.updateTask(id,updateTaskDto , req.user);
     }
 
 }
